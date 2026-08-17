@@ -92,11 +92,11 @@
       position: relative;
       z-index: 2;
       width: 380px;
-      background: rgba(15, 15, 15, 0.45);
+      background: rgba(22, 10, 10, 0.5);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(226, 54, 54, 0.12);
       padding: 80px 32px 36px;
       display: flex;
       flex-direction: column;
@@ -131,7 +131,7 @@
       align-items: center;
       justify-content: center;
       border: 4px solid rgba(15, 15, 15, 0.9);
-      box-shadow: 0 8px 24px rgba(42, 74, 122, 0.4);
+      box-shadow: 0 8px 24px rgba(226, 54, 54, 0.4);
       overflow: hidden;
     }
 
@@ -159,7 +159,7 @@
       display: block;
       font-weight: 700;
       font-size: 16px;
-      background: linear-gradient(90deg, #5a6a7a, #8ab0e0, #2a4a7a, #5a8ad4, #5a6a7a);
+      background: linear-gradient(90deg, #e23636, #ff6659, #1565c0, #42a5f5, #e23636);
       background-size: 300% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -196,7 +196,7 @@
       font-size: 14px;
       font-weight: 600;
       color: #fff;
-      background: linear-gradient(90deg, #5a6a7a, #8ab0e0, #2a4a7a, #5a8ad4, #5a6a7a);
+      background: linear-gradient(90deg, #e23636, #ff6659, #1565c0, #42a5f5, #e23636);
       background-size: 300% 100%;
       min-height: 28px;
       min-width: 60px;
@@ -296,6 +296,9 @@
       gap: 16px;
       opacity: 0;
       transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+      background: linear-gradient(90deg, rgba(15,15,15,0.6), rgba(40,40,40,0.6), rgba(15,15,15,0.6));
+      background-size: 300% 100%;
+      animation: gradient-slide 6s linear infinite;
     }
 
     .credits {
@@ -400,6 +403,61 @@
       fill: currentColor;
     }
 
+    .vol-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vol-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: #aaa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease;
+    }
+
+    .vol-btn:hover {
+      color: #fff;
+    }
+
+    .vol-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .vol-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .vol-bar {
+      width: 4px;
+      border-radius: 1px;
+      background: #333;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vol-bar-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to top, #555, #aaa, #fff);
+      border-radius: 1px;
+    }
+
     .track-info {
       font-size: 12px;
       color: #aaa;
@@ -425,7 +483,7 @@
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--c1, #6366f1), var(--c2, #a855f7));
+      background: linear-gradient(90deg, var(--c1, #1a1a1a), var(--c2, #888), #fff);
       border-radius: 2px;
       width: 0%;
       transition: width 0.1s linear, background 0.3s ease;
@@ -514,6 +572,13 @@
     <div class="progress-bar" id="progressBar" onclick="seek(event)">
       <div class="progress-fill" id="progressFill"></div>
     </div>
+    <div class="vol-group">
+      <button class="vol-btn" id="volBtn" onclick="toggleMute()">
+        <svg id="volIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.47 4.47 0 0 0 2.5-3.5zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06A9 9 0 0 0 14 3.23z"/></svg>
+        <svg id="volMuteIcon" viewBox="0 0 24 24" style="display:none"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.47 4.47 0 0 0 2.5-3.5z"/><path d="M19 9l4 4m0-4l-4 4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </button>
+      <div class="vol-bars" id="volBars" onclick="setVolFromBars(event)"></div>
+    </div>
   </div>
 
   <audio id="audio" loop>
@@ -526,6 +591,8 @@
     const vinyl = document.getElementById('vinyl');
     const playIcon = document.getElementById('playIcon');
     const pauseIcon = document.getElementById('pauseIcon');
+    const volIcon = document.getElementById('volIcon');
+    const volMuteIcon = document.getElementById('volMuteIcon');
     const progressFill = document.getElementById('progressFill');
     const enterScreen = document.getElementById('enterScreen');
 
@@ -535,15 +602,13 @@
       document.getElementById('audioPlayer').classList.add('visible');
       document.getElementById('credits').classList.add('visible');
       document.getElementById('vis').classList.add('visible');
-      setupVisualizer();
       bgVideo.play();
-      audioCtx.resume().then(() => {
-        audio.volume = 1;
-        audio.play();
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
-        vinyl.classList.add('playing');
-      });
+      audio.volume = 1;
+      audio.play();
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
+      vinyl.classList.add('playing');
+      setupVisualizer();
     });
 
     const card = document.getElementById('card');
@@ -580,6 +645,89 @@
       }
     }
 
+    let currentVol = 10;
+    let draggingVol = false;
+
+    function buildVolBars() {
+      const container = document.getElementById('volBars');
+      container.innerHTML = '';
+      const heights = [6, 8, 10, 12, 13, 14, 15, 16, 18, 20];
+      for (let i = 0; i < 10; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'vol-bar';
+        bar.style.height = heights[i] + 'px';
+        const fill = document.createElement('div');
+        fill.className = 'vol-bar-fill';
+        fill.style.height = (i < currentVol ? '100' : '0') + '%';
+        bar.appendChild(fill);
+        container.appendChild(bar);
+      }
+    }
+    buildVolBars();
+
+    function setVolFromBars(e) {
+      const bars = document.querySelectorAll('.vol-bar');
+      const rect = document.getElementById('volBars').getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, x / rect.width));
+      currentVol = pct * 10;
+      audio.volume = currentVol / 10;
+      bars.forEach((b, i) => {
+        const fill = b.querySelector('.vol-bar-fill');
+        if (i < Math.floor(currentVol)) {
+          fill.style.height = '100%';
+        } else if (i === Math.floor(currentVol)) {
+          fill.style.height = ((currentVol % 1) * 100) + '%';
+        } else {
+          fill.style.height = '0%';
+        }
+      });
+      if (currentVol === 0) {
+        volIcon.style.display = 'none';
+        volMuteIcon.style.display = 'block';
+      } else {
+        volIcon.style.display = 'block';
+        volMuteIcon.style.display = 'none';
+      }
+    }
+
+    document.getElementById('volBars').addEventListener('mousedown', (e) => {
+      draggingVol = true;
+      setVolFromBars(e);
+    });
+    document.addEventListener('mousemove', (e) => {
+      if (draggingVol) setVolFromBars(e);
+    });
+    document.addEventListener('mouseup', () => { draggingVol = false; });
+
+    function toggleMute() {
+      if (audio.volume > 0) {
+        audio.dataset.prevVol = audio.volume;
+        audio.volume = 0;
+        currentVol = 0;
+        document.querySelectorAll('.vol-bar-fill').forEach(f => f.style.height = '0%');
+        volIcon.style.display = 'none';
+        volMuteIcon.style.display = 'block';
+      } else {
+        const prev = parseFloat(audio.dataset.prevVol) || 1;
+        audio.volume = prev;
+        currentVol = prev * 10;
+        const bars = document.querySelectorAll('.vol-bar');
+        bars.forEach((b, i) => {
+          const fill = b.querySelector('.vol-bar-fill');
+          if (i < Math.floor(currentVol)) {
+            fill.style.height = '100%';
+          } else if (i === Math.floor(currentVol)) {
+            fill.style.height = ((currentVol % 1) * 100) + '%';
+          } else {
+            fill.style.height = '0%';
+          }
+        });
+        volIcon.style.display = 'block';
+        volMuteIcon.style.display = 'none';
+      }
+    }
+
     function copyLTC() {
       navigator.clipboard.writeText('LfGwtF5myae4GDuQPXfJKSCBEiCBbTwkzP');
       const tooltip = document.getElementById('ltcTooltip');
@@ -610,9 +758,19 @@
     function seek(e) {
       const bar = document.getElementById('progressBar');
       const rect = bar.getBoundingClientRect();
-      const pct = (e.clientX - rect.left) / rect.width;
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       audio.currentTime = pct * (audio.duration - SKIP_END);
     }
+
+    let draggingSeek = false;
+    document.getElementById('progressBar').addEventListener('mousedown', (e) => {
+      draggingSeek = true;
+      seek(e);
+    });
+    document.addEventListener('mousemove', (e) => {
+      if (draggingSeek) seek(e);
+    });
+    document.addEventListener('mouseup', () => { draggingSeek = false; });
 
     const text = 'usp';
     let idx = 0;
@@ -681,6 +839,7 @@
         visSource = audioCtx.createMediaElementSource(audio);
         visSource.connect(analyser);
         analyser.connect(audioCtx.destination);
+        audioCtx.resume();
         visData = new Uint8Array(analyser.frequencyBinCount);
       } catch (e) {
         console.error('Visualizer setup failed:', e);
@@ -701,7 +860,7 @@
         const avg = sum / step;
         const barH = (avg / 255) * visCanvas.height;
         const alpha = 0.3 + (avg / 255) * 0.7;
-        visCtx.fillStyle = `rgba(140, 170, 220, ${alpha})`;
+          visCtx.fillStyle = `rgba(226, 54, 54, ${alpha})`;
         visCtx.fillRect(i * barW + 1, visCanvas.height - barH, barW - 2, barH);
       }
     }
