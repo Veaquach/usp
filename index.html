@@ -124,7 +124,7 @@
       align-items: center;
       justify-content: center;
       border: 4px solid rgba(15, 15, 15, 0.9);
-      box-shadow: 0 8px 24px var(--c1, rgba(99, 102, 241, 0.4));
+      box-shadow: 0 8px 24px rgba(42, 74, 122, 0.4);
       overflow: hidden;
     }
 
@@ -165,7 +165,7 @@
       font-size: 14px;
       font-weight: 600;
       color: #fff;
-      background: linear-gradient(135deg, var(--c1, #6366f1), var(--c2, #a855f7));
+      background: linear-gradient(135deg, #5a6a7a, #2a4a7a);
       min-height: 28px;
       min-width: 60px;
       justify-content: center;
@@ -540,72 +540,6 @@
     }
 
     typeRole();
-
-    async function extractColors() {
-      try {
-        const avatarImg = document.querySelector('.avatar img');
-        const resp = await fetch(avatarImg.src);
-        const blob = await resp.blob();
-        const bmp = await createImageBitmap(blob);
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const size = 64;
-        canvas.width = size;
-        canvas.height = size;
-        ctx.drawImage(bmp, 0, 0, size, size);
-        const data = ctx.getImageData(0, 0, size, size).data;
-
-        let pixels = [];
-        for (let i = 0; i < data.length; i += 4) {
-          const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
-          if (a < 128) continue;
-          if (r + g + b > 700 || r + g + b < 30) continue;
-          pixels.push([r, g, b]);
-        }
-
-        if (pixels.length < 10) return;
-
-        function medianCut(px, depth) {
-          if (depth === 0 || px.length === 0) {
-            const avg = [0, 0, 0];
-            px.forEach(p => { avg[0] += p[0]; avg[1] += p[1]; avg[2] += p[2]; });
-            return [px.length > 0 ? avg.map(v => Math.round(v / px.length)) : [0, 0, 0]];
-          }
-          let mn = [255, 255, 255], mx = [0, 0, 0];
-          px.forEach(p => p.forEach((v, i) => { if (v < mn[i]) mn[i] = v; if (v > mx[i]) mx[i] = v; }));
-          let range = mx.map((v, i) => v - mn[i]);
-          let ch = range.indexOf(Math.max(...range));
-          px.sort((a, b) => a[ch] - b[ch]);
-          const mid = Math.floor(px.length / 2);
-          return [...medianCut(px.slice(0, mid), depth - 1), ...medianCut(px.slice(mid), depth - 1)];
-        }
-
-        const colors = medianCut(pixels, 4);
-
-        function dist(a, b) {
-          return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2);
-        }
-
-        colors.sort((a, b) => dist(b, [128, 128, 128]) - dist(a, [128, 128, 128]));
-
-        let c1 = colors[0], c2 = colors[1] || colors[0];
-        for (let i = 1; i < colors.length; i++) {
-          if (dist(colors[i], c1) > 60) {
-            c2 = colors[i];
-            break;
-          }
-        }
-
-        const toHex = (c) => '#' + c.map(x => Math.max(0, Math.min(255, x)).toString(16).padStart(2, '0')).join('');
-
-        document.documentElement.style.setProperty('--c1', toHex(c1));
-        document.documentElement.style.setProperty('--c2', toHex(c2));
-      } catch (e) {
-        console.log('Color extraction failed:', e);
-      }
-    }
-
-    extractColors();
   </script>
 </body>
 
