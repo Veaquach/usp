@@ -691,11 +691,17 @@
       setTimeout(() => { tooltip.textContent = 'Litecoin'; }, 2000);
     }
 
+    const SKIP_END = 7;
+
     audio.addEventListener('timeupdate', () => {
       if (audio.duration) {
-        progressFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+        const effective = audio.duration - SKIP_END;
+        if (audio.currentTime >= effective) {
+          audio.currentTime = 0;
+        }
+        progressFill.style.width = (audio.currentTime / effective * 100) + '%';
         document.getElementById('timeDisplay').textContent =
-          formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+          formatTime(audio.currentTime) + ' / ' + formatTime(effective);
       }
     });
 
@@ -709,7 +715,7 @@
       const bar = document.getElementById('progressBar');
       const rect = bar.getBoundingClientRect();
       const pct = (e.clientX - rect.left) / rect.width;
-      audio.currentTime = pct * audio.duration;
+      audio.currentTime = pct * (audio.duration - SKIP_END);
     }
 
     const text = 'usp';
