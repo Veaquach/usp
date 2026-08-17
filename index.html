@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@ </title>
+  <link rel="icon" type="image/jpeg" href="avatar.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -307,9 +308,22 @@
       pointer-events: none;
     }
 
+    .credits a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .credits a:hover {
+      color: #aaa;
+    }
+
     .credits.visible {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
     }
 
     .audio-player.visible {
@@ -454,7 +468,7 @@
 
   <div class="credits" id="credits">
     usp - coding since early 2025<br>
-    credits to guns.lol and byfron.llc for the ui inspiration
+    credits to <a href="https://guns.lol" target="_blank">guns.lol</a> and <a href="https://byfron.llc" target="_blank">byfron.llc</a> for the ui inspiration
   </div>
 
   <div class="audio-player" id="audioPlayer">
