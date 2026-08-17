@@ -296,7 +296,7 @@
       gap: 16px;
       opacity: 0;
       transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
-      background: linear-gradient(90deg, rgba(15,15,15,0.6), rgba(40,40,40,0.6), rgba(15,15,15,0.6));
+      background: linear-gradient(90deg, rgba(15, 15, 15, 0.6), rgba(40, 40, 40, 0.6), rgba(15, 15, 15, 0.6));
       background-size: 300% 100%;
       animation: gradient-slide 6s linear infinite;
     }
@@ -514,7 +514,8 @@
       <span>i am a</span>
       <span class="role-box" id="roleBox"></span>
     </div>
-    <div class="bio">hi, i'm <strong>usphind</strong>!<br>i specialize in luau and some javascript, i mainly make
+    <div class="bio">hi, i'm <strong>usphind</strong>!<br>i love <strong>marvel</strong> (as seen in the
+      background)<br>i specialize in luau and some javascript, i mainly make
       scripts and
       uis.<span class="story-title">my story</span>i
       started coding in <strong>early 2025</strong> with luau, it became my passion and ever since i have progressed
@@ -578,8 +579,14 @@
     </div>
     <div class="vol-group">
       <button class="vol-btn" id="volBtn" onclick="toggleMute()">
-        <svg id="volIcon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.47 4.47 0 0 0 2.5-3.5zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06A9 9 0 0 0 14 3.23z"/></svg>
-        <svg id="volMuteIcon" viewBox="0 0 24 24" style="display:none"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.47 4.47 0 0 0 2.5-3.5z"/><path d="M19 9l4 4m0-4l-4 4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+        <svg id="volIcon" viewBox="0 0 24 24">
+          <path
+            d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.47 4.47 0 0 0 2.5-3.5zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06A9 9 0 0 0 14 3.23z" />
+        </svg>
+        <svg id="volMuteIcon" viewBox="0 0 24 24" style="display:none">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.47 4.47 0 0 0 2.5-3.5z" />
+          <path d="M19 9l4 4m0-4l-4 4" stroke="currentColor" stroke-width="2" fill="none" />
+        </svg>
       </button>
       <div class="vol-bars" id="volBars" onclick="setVolFromBars(event)"></div>
     </div>
@@ -606,11 +613,11 @@
       document.getElementById('audioPlayer').classList.add('visible');
       document.getElementById('credits').classList.add('visible');
       document.getElementById('vis').classList.add('visible');
-          bgVideo.currentTime = 6;
+      bgVideo.currentTime = 6;
       bgVideo.play();
       bgVideo.addEventListener('timeupdate', () => {
         if (bgVideo.currentTime >= bgVideo.duration - 0.5) {
-      bgVideo.currentTime = 6;
+          bgVideo.currentTime = 6;
         }
       });
       audio.volume = 1;
@@ -868,7 +875,7 @@
         const avg = sum / step;
         const barH = (avg / 255) * visCanvas.height;
         const alpha = 0.3 + (avg / 255) * 0.7;
-          visCtx.fillStyle = `rgba(226, 54, 54, ${alpha})`;
+        visCtx.fillStyle = `rgba(226, 54, 54, ${alpha})`;
         visCtx.fillRect(i * barW + 1, visCanvas.height - barH, barW - 2, barH);
       }
     }
