@@ -26,24 +26,13 @@
       background: #000;
     }
 
-    .bg-video {
+    canvas#bgCanvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
       z-index: 0;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 1;
     }
 
     .enter-screen {
@@ -331,6 +320,22 @@
       pointer-events: auto;
     }
 
+    .visualizer {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      width: 300px;
+      height: 40px;
+      opacity: 0;
+      transition: opacity 0.6s ease 0.3s;
+    }
+
+    .visualizer.visible {
+      opacity: 1;
+    }
+
     .audio-player.visible {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
@@ -418,10 +423,7 @@
 </head>
 
 <body>
-  <video class="bg-video" id="bgVideo" loop muted playsinline>
-    <source src="bg.mp4" type="video/mp4">
-  </video>
-  <div class="overlay"></div>
+  <canvas id="bgCanvas"></canvas>
 
   <div class="enter-screen" id="enterScreen">
     <div class="enter-text">click to enter</div>
@@ -452,7 +454,7 @@
       <a href="https://discord.com/users/1269401238118727734" target="_blank" class="icon-btn">
         <svg viewBox="0 0 24 24">
           <path
-            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157-2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
         </svg>
         <span class="tooltip"><strong>Discord</strong></span>
       </a>
@@ -480,6 +482,8 @@
       target="_blank">byfron.llc</a> for the ui inspiration
   </div>
 
+  <canvas class="visualizer" id="vis" width="300" height="40"></canvas>
+
   <div class="audio-player" id="audioPlayer">
     <img class="vinyl" id="vinyl" src="vinyl.webp" alt="vinyl">
     <button class="play-btn" id="playBtn" onclick="togglePlay()">
@@ -491,7 +495,7 @@
         <rect x="15" y="3" width="4" height="18" />
       </svg>
     </button>
-    <div class="track-info">FEVER - BUCKSHOT & FAKEMINK</div>
+    <div class="track-info">mysterious teen</div>
     <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
     <div class="progress-bar" id="progressBar" onclick="seek(event)">
       <div class="progress-fill" id="progressFill"></div>
@@ -503,7 +507,126 @@
   </audio>
 
   <script>
-    const bgVideo = document.getElementById('bgVideo');
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    let mouseX = 0, mouseY = 0;
+    let mouseDown = false;
+    let lines = [];
+    const NUM_LINES = 25;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    document.addEventListener('mousedown', () => { mouseDown = true; });
+    document.addEventListener('mouseup', () => { mouseDown = false; });
+
+    class CurveLine {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.angle = Math.random() * Math.PI * 2;
+        this.speed = 0.3 + Math.random() * 0.4;
+        this.rotSpeed = (Math.random() - 0.5) * 0.015;
+        this.segLen = 6 + Math.random() * 8;
+        this.segs = 20 + Math.floor(Math.random() * 20);
+        this.hue = 210 + Math.random() * 30;
+        this.alpha = 0.15 + Math.random() * 0.25;
+        this.lineWidth = 0.8 + Math.random() * 1.2;
+        this.wobblePhase = Math.random() * Math.PI * 2;
+        this.wobbleSpeed = 0.008 + Math.random() * 0.012;
+        this.wobbleAmp = 0.3 + Math.random() * 0.5;
+        this.trail = [];
+        this.maxTrail = this.segs;
+      }
+
+      update() {
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const influence = Math.max(0, 1 - dist / 400);
+
+        let targetAngle;
+        if (mouseDown) {
+          targetAngle = Math.atan2(-dy, -dx);
+          this.angle += (targetAngle - this.angle) * 0.08 * (1 + influence * 5);
+        } else {
+          targetAngle = Math.atan2(dy, dx);
+          let angleDiff = targetAngle - this.angle;
+          while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+          while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+          this.angle += angleDiff * 0.02 * (1 + influence * 3);
+        }
+
+        this.wobblePhase += this.wobbleSpeed;
+        const wobble = Math.sin(this.wobblePhase) * this.wobbleAmp;
+        this.angle += wobble * 0.02;
+
+        this.x += Math.cos(this.angle) * this.speed * (1 + influence * 1.5);
+        this.y += Math.sin(this.angle) * this.speed * (1 + influence * 1.5);
+
+        this.trail.push({ x: this.x, y: this.y });
+        if (this.trail.length > this.maxTrail) {
+          this.trail.shift();
+        }
+
+        if (this.x < -100 || this.x > W + 100 || this.y < -100 || this.y > H + 100) {
+          this.reset();
+          const edge = Math.floor(Math.random() * 4);
+          if (edge === 0) { this.x = -10; this.y = Math.random() * H; }
+          else if (edge === 1) { this.x = W + 10; this.y = Math.random() * H; }
+          else if (edge === 2) { this.y = -10; this.x = Math.random() * W; }
+          else { this.y = H + 10; this.x = Math.random() * W; }
+          this.trail = [];
+        }
+      }
+
+      draw() {
+        if (this.trail.length < 2) return;
+        ctx.beginPath();
+        ctx.moveTo(this.trail[0].x, this.trail[0].y);
+        for (let i = 1; i < this.trail.length; i++) {
+          const p0 = this.trail[i - 1];
+          const p1 = this.trail[i];
+          const mx = (p0.x + p1.x) / 2;
+          const my = (p0.y + p1.y) / 2;
+          ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
+        }
+        ctx.strokeStyle = `hsla(${this.hue}, 30%, 70%, ${this.alpha})`;
+        ctx.lineWidth = this.lineWidth;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+    }
+
+    for (let i = 0; i < NUM_LINES; i++) {
+      lines.push(new CurveLine());
+    }
+
+    function animate() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      ctx.fillRect(0, 0, W, H);
+      for (const line of lines) {
+        line.update();
+        line.draw();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+
     const audio = document.getElementById('audio');
     const vinyl = document.getElementById('vinyl');
     const playIcon = document.getElementById('playIcon');
@@ -516,12 +639,15 @@
       document.getElementById('card').classList.add('visible');
       document.getElementById('audioPlayer').classList.add('visible');
       document.getElementById('credits').classList.add('visible');
-      bgVideo.play();
-      audio.volume = 1;
-      audio.play();
-      playIcon.style.display = 'none';
-      pauseIcon.style.display = 'block';
-      vinyl.classList.add('playing');
+      document.getElementById('vis').classList.add('visible');
+      setupVisualizer();
+      audioCtx.resume().then(() => {
+        audio.volume = 1;
+        audio.play();
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+        vinyl.classList.add('playing');
+      });
     });
 
     const card = document.getElementById('card');
@@ -544,6 +670,7 @@
 
     function togglePlay() {
       if (audio.paused) {
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         audio.volume = 1;
         audio.play();
         playIcon.style.display = 'none';
@@ -585,14 +712,11 @@
       audio.currentTime = pct * audio.duration;
     }
 
-    const titleEl = document.title;
     const text = 'usp';
     let idx = 0;
     let direction = 1;
-    let typing = true;
 
     function typewrite() {
-      if (!typing) return;
       idx += direction;
       if (idx > text.length) {
         direction = -1;
@@ -607,7 +731,6 @@
       document.title = '@ ' + text.substring(0, idx);
       setTimeout(typewrite, direction === 1 ? 120 : 80);
     }
-
     typewrite();
 
     const roles = ['luau lover', 'developer', 'ui designer', 'script developer', 'javascript developer', 'self taught developer', 'private developer'];
@@ -615,10 +738,10 @@
     let roleIdx = 0;
     let roleCharIdx = 0;
     let roleDeleting = false;
-    let roleDelay = 0;
 
     function typeRole() {
       const current = roles[roleIdx];
+      let roleDelay;
       if (!roleDeleting) {
         roleCharIdx++;
         roleDelay = 80;
@@ -639,8 +762,43 @@
       roleBox.textContent = current.substring(0, roleCharIdx);
       setTimeout(typeRole, roleDelay);
     }
-
     typeRole();
+
+    let audioCtx, analyser, visCanvas, visCtx, visData, visSource;
+
+    function setupVisualizer() {
+      try {
+        visCanvas = document.getElementById('vis');
+        visCtx = visCanvas.getContext('2d');
+        visCanvas.width = 300;
+        visCanvas.height = 40;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 64;
+        visSource = audioCtx.createMediaElementSource(audio);
+        visSource.connect(analyser);
+        analyser.connect(audioCtx.destination);
+        visData = new Uint8Array(analyser.frequencyBinCount);
+      } catch(e) {
+        console.error('Visualizer setup failed:', e);
+      }
+    }
+
+    function drawVis() {
+      requestAnimationFrame(drawVis);
+      if (!analyser || !visCtx) return;
+      analyser.getByteFrequencyData(visData);
+      visCtx.clearRect(0, 0, visCanvas.width, visCanvas.height);
+      const barW = visCanvas.width / visData.length;
+      for (let i = 0; i < visData.length; i++) {
+        const barH = (visData[i] / 255) * visCanvas.height;
+        const x = i * barW;
+        const alpha = 0.3 + (visData[i] / 255) * 0.7;
+        visCtx.fillStyle = `rgba(140, 170, 220, ${alpha})`;
+        visCtx.fillRect(x, visCanvas.height - barH, barW - 1, barH);
+      }
+    }
+    drawVis();
   </script>
 </body>
 
