@@ -158,12 +158,19 @@
       display: block;
       font-weight: 700;
       font-size: 16px;
-      background: linear-gradient(135deg, #8aa8c8, #5a8ad4);
+      background: linear-gradient(90deg, #5a6a7a, #8ab0e0, #2a4a7a, #5a8ad4, #5a6a7a);
+      background-size: 300% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin: 16px 0 12px;
       letter-spacing: 0.5px;
+      animation: gradient-slide 4s linear infinite;
+    }
+
+    @keyframes gradient-slide {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
     }
 
     .role-section {
@@ -183,11 +190,13 @@
       font-size: 14px;
       font-weight: 600;
       color: #fff;
-      background: linear-gradient(135deg, #5a6a7a, #2a4a7a);
+      background: linear-gradient(90deg, #5a6a7a, #8ab0e0, #2a4a7a, #5a8ad4, #5a6a7a);
+      background-size: 300% 100%;
       min-height: 28px;
       min-width: 60px;
       justify-content: center;
       transition: background 0.3s ease;
+      animation: gradient-slide 4s linear infinite;
     }
 
     .divider {
