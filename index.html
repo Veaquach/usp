@@ -26,13 +26,24 @@
       background: #000;
     }
 
-    canvas#bgCanvas {
+    .bg-video {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      object-fit: cover;
       z-index: 0;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
     }
 
     .enter-screen {
@@ -423,7 +434,10 @@
 </head>
 
 <body>
-  <canvas id="bgCanvas"></canvas>
+  <video class="bg-video" id="bgVideo" loop muted playsinline>
+    <source src="bg_trimmed.webm" type="video/webm">
+  </video>
+  <div class="overlay"></div>
 
   <div class="enter-screen" id="enterScreen">
     <div class="enter-text">click to enter</div>
@@ -507,126 +521,7 @@
   </audio>
 
   <script>
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
-    let W, H;
-    let mouseX = 0, mouseY = 0;
-    let mouseDown = false;
-    let lines = [];
-    const NUM_LINES = 25;
-
-    function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    document.addEventListener('mousedown', () => { mouseDown = true; });
-    document.addEventListener('mouseup', () => { mouseDown = false; });
-
-    class CurveLine {
-      constructor() {
-        this.reset();
-      }
-
-      reset() {
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
-        this.angle = Math.random() * Math.PI * 2;
-        this.speed = 0.3 + Math.random() * 0.4;
-        this.rotSpeed = (Math.random() - 0.5) * 0.015;
-        this.segLen = 6 + Math.random() * 8;
-        this.segs = 20 + Math.floor(Math.random() * 20);
-        this.hue = 210 + Math.random() * 30;
-        this.alpha = 0.15 + Math.random() * 0.25;
-        this.lineWidth = 0.8 + Math.random() * 1.2;
-        this.wobblePhase = Math.random() * Math.PI * 2;
-        this.wobbleSpeed = 0.008 + Math.random() * 0.012;
-        this.wobbleAmp = 0.3 + Math.random() * 0.5;
-        this.trail = [];
-        this.maxTrail = this.segs;
-      }
-
-      update() {
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const influence = Math.max(0, 1 - dist / 400);
-
-        let targetAngle;
-        if (mouseDown) {
-          targetAngle = Math.atan2(-dy, -dx);
-          this.angle += (targetAngle - this.angle) * 0.08 * (1 + influence * 5);
-        } else {
-          targetAngle = Math.atan2(dy, dx);
-          let angleDiff = targetAngle - this.angle;
-          while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-          while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-          this.angle += angleDiff * 0.02 * (1 + influence * 3);
-        }
-
-        this.wobblePhase += this.wobbleSpeed;
-        const wobble = Math.sin(this.wobblePhase) * this.wobbleAmp;
-        this.angle += wobble * 0.02;
-
-        this.x += Math.cos(this.angle) * this.speed * (1 + influence * 1.5);
-        this.y += Math.sin(this.angle) * this.speed * (1 + influence * 1.5);
-
-        this.trail.push({ x: this.x, y: this.y });
-        if (this.trail.length > this.maxTrail) {
-          this.trail.shift();
-        }
-
-        if (this.x < -100 || this.x > W + 100 || this.y < -100 || this.y > H + 100) {
-          this.reset();
-          const edge = Math.floor(Math.random() * 4);
-          if (edge === 0) { this.x = -10; this.y = Math.random() * H; }
-          else if (edge === 1) { this.x = W + 10; this.y = Math.random() * H; }
-          else if (edge === 2) { this.y = -10; this.x = Math.random() * W; }
-          else { this.y = H + 10; this.x = Math.random() * W; }
-          this.trail = [];
-        }
-      }
-
-      draw() {
-        if (this.trail.length < 2) return;
-        ctx.beginPath();
-        ctx.moveTo(this.trail[0].x, this.trail[0].y);
-        for (let i = 1; i < this.trail.length; i++) {
-          const p0 = this.trail[i - 1];
-          const p1 = this.trail[i];
-          const mx = (p0.x + p1.x) / 2;
-          const my = (p0.y + p1.y) / 2;
-          ctx.quadraticCurveTo(p0.x, p0.y, mx, my);
-        }
-        ctx.strokeStyle = `hsla(${this.hue}, 30%, 70%, ${this.alpha})`;
-        ctx.lineWidth = this.lineWidth;
-        ctx.lineCap = 'round';
-        ctx.stroke();
-      }
-    }
-
-    for (let i = 0; i < NUM_LINES; i++) {
-      lines.push(new CurveLine());
-    }
-
-    function animate() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-      ctx.fillRect(0, 0, W, H);
-      for (const line of lines) {
-        line.update();
-        line.draw();
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
-
+    const bgVideo = document.getElementById('bgVideo');
     const audio = document.getElementById('audio');
     const vinyl = document.getElementById('vinyl');
     const playIcon = document.getElementById('playIcon');
@@ -641,6 +536,7 @@
       document.getElementById('credits').classList.add('visible');
       document.getElementById('vis').classList.add('visible');
       setupVisualizer();
+      bgVideo.play();
       audioCtx.resume().then(() => {
         audio.volume = 1;
         audio.play();
