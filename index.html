@@ -774,7 +774,8 @@
         visCanvas.height = 40;
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 64;
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.6;
         visSource = audioCtx.createMediaElementSource(audio);
         visSource.connect(analyser);
         analyser.connect(audioCtx.destination);
@@ -789,13 +790,17 @@
       if (!analyser || !visCtx) return;
       analyser.getByteFrequencyData(visData);
       visCtx.clearRect(0, 0, visCanvas.width, visCanvas.height);
-      const barW = visCanvas.width / visData.length;
-      for (let i = 0; i < visData.length; i++) {
-        const barH = (visData[i] / 255) * visCanvas.height;
-        const x = i * barW;
-        const alpha = 0.3 + (visData[i] / 255) * 0.7;
+      const bars = 32;
+      const step = Math.floor(visData.length / bars);
+      const barW = visCanvas.width / bars;
+      for (let i = 0; i < bars; i++) {
+        let sum = 0;
+        for (let j = 0; j < step; j++) sum += visData[i * step + j];
+        const avg = sum / step;
+        const barH = (avg / 255) * visCanvas.height;
+        const alpha = 0.3 + (avg / 255) * 0.7;
         visCtx.fillStyle = `rgba(140, 170, 220, ${alpha})`;
-        visCtx.fillRect(x, visCanvas.height - barH, barW - 1, barH);
+        visCtx.fillRect(i * barW + 1, visCanvas.height - barH, barW - 2, barH);
       }
     }
     drawVis();
