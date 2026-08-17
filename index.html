@@ -435,18 +435,21 @@
 
     .vol-bars {
       display: flex;
-      align-items: flex-end;
+      flex-direction: column-reverse;
+      align-items: center;
       gap: 2px;
-      height: 20px;
+      width: 16px;
+      height: 35px;
       cursor: pointer;
     }
 
     .vol-bar {
-      width: 4px;
-      border-radius: 1px;
+      width: calc(100% - 2px);
+      border-radius: 2px;
       background: #333;
       position: relative;
       overflow: hidden;
+      flex: 1;
     }
 
     .vol-bar-fill {
@@ -454,8 +457,9 @@
       bottom: 0;
       left: 0;
       width: 100%;
+      height: 0%;
       background: linear-gradient(to top, #555, #aaa, #fff);
-      border-radius: 1px;
+      border-radius: 2px;
     }
 
     .track-info {
@@ -602,7 +606,13 @@
       document.getElementById('audioPlayer').classList.add('visible');
       document.getElementById('credits').classList.add('visible');
       document.getElementById('vis').classList.add('visible');
+          bgVideo.currentTime = 6;
       bgVideo.play();
+      bgVideo.addEventListener('timeupdate', () => {
+        if (bgVideo.currentTime >= bgVideo.duration - 0.5) {
+      bgVideo.currentTime = 6;
+        }
+      });
       audio.volume = 1;
       audio.play();
       playIcon.style.display = 'none';
@@ -651,11 +661,9 @@
     function buildVolBars() {
       const container = document.getElementById('volBars');
       container.innerHTML = '';
-      const heights = [6, 8, 10, 12, 13, 14, 15, 16, 18, 20];
       for (let i = 0; i < 10; i++) {
         const bar = document.createElement('div');
         bar.className = 'vol-bar';
-        bar.style.height = heights[i] + 'px';
         const fill = document.createElement('div');
         fill.className = 'vol-bar-fill';
         fill.style.height = (i < currentVol ? '100' : '0') + '%';
@@ -668,8 +676,8 @@
     function setVolFromBars(e) {
       const bars = document.querySelectorAll('.vol-bar');
       const rect = document.getElementById('volBars').getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const pct = Math.max(0, Math.min(1, x / rect.width));
+      const y = rect.bottom - e.clientY;
+      const pct = Math.max(0, Math.min(1, y / rect.height));
       currentVol = pct * 10;
       audio.volume = currentVol / 10;
       bars.forEach((b, i) => {
