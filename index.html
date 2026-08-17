@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,8 +76,15 @@
     }
 
     @keyframes pulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 1;
+      }
     }
 
     .card {
@@ -277,8 +285,13 @@
     }
 
     @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     .play-btn {
@@ -337,9 +350,10 @@
     }
   </style>
 </head>
+
 <body>
   <video class="bg-video" id="bgVideo" loop muted playsinline>
-    <source src="runrunrun!.!.!.!.mp4" type="video/mp4">
+    <source src="bg.mp4" type="video/mp4">
   </video>
   <div class="overlay"></div>
 
@@ -359,26 +373,41 @@
     <div class="bio">Hello World!</div>
     <div class="divider"></div>
     <div class="links">
-      <a href="#" class="icon-btn">
-        <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      <a href="https://discord.com/users/1269401238118727734" target="_blank" class="icon-btn">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+        </svg>
         <span class="tooltip">Discord</span>
       </a>
-      <a href="#" class="icon-btn">
-        <svg viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      <a href="https://github.com/Veaquach" target="_blank" class="icon-btn">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+        </svg>
         <span class="tooltip">GitHub</span>
       </a>
-      <a href="#" class="icon-btn">
-        <svg viewBox="0 0 82.6 82.6"><path d="M42,42.7,37.7,57.2h23a1.16,1.16,0,0,1,1.2,1.12v.38l-2,6.9a1.49,1.49,0,0,1-1.5,1.1H23.2l5.9-20.1-6.6,2L24,44l6.6-2,8.3-28.2a1.51,1.51,0,0,1,1.5-1.1h8.9a1.16,1.16,0,0,1,1.2,1.12v.38L43.5,38l6.6-2-1.4,4.8Z" fill="#fff"/></svg>
-        <span class="tooltip">Litecoin</span>
-      </a>
+      <div class="icon-btn" id="ltcBtn" onclick="copyLTC()">
+        <svg viewBox="0 0 82.6 82.6">
+          <path
+            d="M42,42.7,37.7,57.2h23a1.16,1.16,0,0,1,1.2,1.12v.38l-2,6.9a1.49,1.49,0,0,1-1.5,1.1H23.2l5.9-20.1-6.6,2L24,44l6.6-2,8.3-28.2a1.51,1.51,0,0,1,1.5-1.1h8.9a1.16,1.16,0,0,1,1.2,1.12v.38L43.5,38l6.6-2-1.4,4.8Z"
+            fill="#fff" />
+        </svg>
+        <span class="tooltip" id="ltcTooltip">Litecoin</span>
+      </div>
     </div>
   </div>
 
   <div class="audio-player" id="audioPlayer">
     <img class="vinyl" id="vinyl" src="vinyl.webp" alt="vinyl">
     <button class="play-btn" id="playBtn" onclick="togglePlay()">
-      <svg id="playIcon" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-      <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+      <svg id="playIcon" viewBox="0 0 24 24">
+        <polygon points="5,3 19,12 5,21" />
+      </svg>
+      <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none">
+        <rect x="5" y="3" width="4" height="18" />
+        <rect x="15" y="3" width="4" height="18" />
+      </svg>
     </button>
     <div class="track-info">FEVER - BUCKSHOT & FAKEMINK</div>
     <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
@@ -388,7 +417,7 @@
   </div>
 
   <audio id="audio" loop>
-    <source src="BUCKSHOT%20%26%20FAKEMINK%20-%20FEVER.mp3" type="audio/mpeg">
+    <source src="fever.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -425,6 +454,13 @@
         pauseIcon.style.display = 'none';
         vinyl.classList.remove('playing');
       }
+    }
+
+    function copyLTC() {
+      navigator.clipboard.writeText('LfGwtF5myae4GDuQPXfJKSCBEiCBbTwkzP');
+      const tooltip = document.getElementById('ltcTooltip');
+      tooltip.textContent = 'Copied!';
+      setTimeout(() => { tooltip.textContent = 'Litecoin'; }, 2000);
     }
 
     audio.addEventListener('timeupdate', () => {
@@ -521,7 +557,7 @@
 
         let pixels = [];
         for (let i = 0; i < data.length; i += 4) {
-          const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+          const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
           if (a < 128) continue;
           if (r + g + b > 700 || r + g + b < 30) continue;
           pixels.push([r, g, b]);
@@ -533,9 +569,9 @@
           if (depth === 0 || px.length === 0) {
             const avg = [0, 0, 0];
             px.forEach(p => { avg[0] += p[0]; avg[1] += p[1]; avg[2] += p[2]; });
-            return [px.length > 0 ? avg.map(v => Math.round(v / px.length)) : [0,0,0]];
+            return [px.length > 0 ? avg.map(v => Math.round(v / px.length)) : [0, 0, 0]];
           }
-          let mn = [255,255,255], mx = [0,0,0];
+          let mn = [255, 255, 255], mx = [0, 0, 0];
           px.forEach(p => p.forEach((v, i) => { if (v < mn[i]) mn[i] = v; if (v > mx[i]) mx[i] = v; }));
           let range = mx.map((v, i) => v - mn[i]);
           let ch = range.indexOf(Math.max(...range));
@@ -547,10 +583,10 @@
         const colors = medianCut(pixels, 4);
 
         function dist(a, b) {
-          return Math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2 + (a[2]-b[2])**2);
+          return Math.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 + (a[2] - b[2]) ** 2);
         }
 
-        colors.sort((a, b) => dist(b, [128,128,128]) - dist(a, [128,128,128]));
+        colors.sort((a, b) => dist(b, [128, 128, 128]) - dist(a, [128, 128, 128]));
 
         let c1 = colors[0], c2 = colors[1] || colors[0];
         for (let i = 1; i < colors.length; i++) {
@@ -560,11 +596,11 @@
           }
         }
 
-        const toHex = (c) => '#' + c.map(x => Math.max(0, Math.min(255, x)).toString(16).padStart(2,'0')).join('');
+        const toHex = (c) => '#' + c.map(x => Math.max(0, Math.min(255, x)).toString(16).padStart(2, '0')).join('');
 
         document.documentElement.style.setProperty('--c1', toHex(c1));
         document.documentElement.style.setProperty('--c2', toHex(c2));
-      } catch(e) {
+      } catch (e) {
         console.log('Color extraction failed:', e);
       }
     }
@@ -572,4 +608,5 @@
     extractColors();
   </script>
 </body>
+
 </html>
