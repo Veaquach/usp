@@ -159,14 +159,19 @@
       display: block;
       font-weight: 700;
       font-size: 16px;
-      background: linear-gradient(90deg, #e23636, #ff6659, #1565c0, #42a5f5, #e23636);
-      background-size: 300% 100%;
+      background: linear-gradient(90deg, #e23636, #ff6659, #e23636, #1565c0, #42a5f5, #1565c0, #e23636);
+      background-size: 200% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin: 16px 0 12px;
       letter-spacing: 0.5px;
-      animation: gradient-slide 4s linear infinite;
+      animation: story-shimmer 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes story-shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
     }
 
     @keyframes gradient-slide {
