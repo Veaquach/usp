@@ -29,9 +29,11 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      overflow: hidden;
+      align-items: flex-start;
+      overflow-x: hidden;
+      overflow-y: auto;
       background: #000;
+      isolation: isolate;
     }
 
     .bg-video {
@@ -96,10 +98,20 @@
       }
     }
 
+    .page-wrapper {
+      width: 90%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10vh;
+      padding-bottom: 140px;
+    }
+
     .card {
       position: relative;
       z-index: 2;
-      width: 380px;
+      width: 100%;
       background: rgba(22, 10, 10, 0.4);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
@@ -113,9 +125,7 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 40px rgba(226, 54, 54, 0.08);
       opacity: 0;
       transform: translateY(30px) scale(0.95);
-      transition: opacity 0.6s ease, transform 0.15s ease;
-      transform-style: preserve-3d;
-      perspective: 800px;
+      transition: opacity 0.6s ease;
     }
 
     .card.visible {
@@ -124,7 +134,7 @@
     }
 
     .card.tilt {
-      transition: opacity 0.6s ease, transform 0.05s ease;
+      transition: opacity 0.6s ease;
     }
 
     .avatar {
@@ -178,8 +188,13 @@
     }
 
     @keyframes story-shimmer {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+
+      100% {
+        background-position: 100% 50%;
+      }
     }
 
     @keyframes gradient-slide {
@@ -295,10 +310,11 @@
 
     .audio-player {
       position: fixed;
-      bottom: 24px;
+      bottom: 16px;
       left: 50%;
-      transform: translateX(-50%) translateY(40px);
+      transform: translateX(-50%) translateY(60px);
       z-index: 10;
+      width: min(420px, 90vw);
       background: rgba(15, 15, 15, 0.4);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -316,18 +332,16 @@
     }
 
     .credits {
-      position: fixed;
-      bottom: 140px;
-      left: 50%;
-      transform: translateX(-50%) translateY(40px);
-      z-index: 11;
       text-align: center;
-      color: #666;
-      font-size: 11px;
+      color: #999;
+      font-size: 12px;
       line-height: 1.8;
+      margin-top: 20px;
       opacity: 0;
-      transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
+      transition: opacity 0.6s ease 0.4s;
       pointer-events: none;
+      position: relative;
+      z-index: 3;
     }
 
     .credits a {
@@ -344,17 +358,48 @@
 
     .credits.visible {
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
       pointer-events: auto;
+    }
+
+    .scroll-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 10px;
+      letter-spacing: 1px;
+      opacity: 0;
+      transition: opacity 0.6s ease 0.6s;
+      pointer-events: none;
+      margin: 10px 0 -4px;
+    }
+
+    .scroll-indicator.visible {
+      opacity: 1;
+    }
+
+    .scroll-indicator.hidden {
+      opacity: 0 !important;
+      transition: opacity 0.3s ease !important;
+    }
+
+    .scroll-indicator svg {
+      animation: scrollBounce 1.5s ease-in-out infinite;
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
     }
 
     .visualizer {
       position: fixed;
-      bottom: 90px;
+      bottom: 76px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
-      width: 300px;
+      width: min(300px, 80vw);
       height: 40px;
       opacity: 0;
       transition: opacity 0.6s ease 0.3s;
@@ -506,6 +551,184 @@
       width: 0%;
       transition: width 0.1s linear, background 0.3s ease;
     }
+
+    @media (max-width: 480px) {
+      .page-wrapper {
+        width: 92%;
+        margin-top: 6vh;
+        padding-bottom: 130px;
+      }
+
+      .card {
+        padding: 70px 16px 24px;
+        border-radius: 16px;
+      }
+
+      .avatar {
+        width: 80px;
+        height: 80px;
+        top: -40px;
+      }
+
+      .handle {
+        font-size: 18px;
+        margin-bottom: 12px;
+      }
+
+      .bio {
+        font-size: 13px;
+        line-height: 1.5;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .bio .story-title {
+        font-size: 14px;
+      }
+
+      .role-section {
+        font-size: 13px;
+      }
+
+      .role-box {
+        font-size: 13px;
+        min-height: 24px;
+        min-width: 50px;
+      }
+
+      .icon-btn {
+        width: 38px;
+        height: 38px;
+      }
+
+      .icon-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .audio-player {
+        width: 92%;
+        padding: 8px 12px;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius: 16px;
+      }
+
+      .vol-group {
+        display: none;
+      }
+
+      .progress-bar {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .track-info {
+        font-size: 11px;
+      }
+
+      .time-display {
+        font-size: 10px;
+      }
+
+      .vinyl {
+        width: 36px;
+        height: 36px;
+      }
+
+      .play-btn {
+        width: 32px;
+        height: 32px;
+      }
+
+      .play-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .visualizer {
+        width: min(250px, 70vw);
+        bottom: 76px;
+      }
+
+      .credits {
+        font-size: 10px;
+      }
+
+      .enter-text {
+        font-size: 16px;
+        padding: 0 20px;
+        text-align: center;
+      }
+    }
+
+    @media (max-height: 700px) {
+      .page-wrapper {
+        margin-top: 4vh;
+        padding-bottom: 120px;
+      }
+
+      .card {
+        padding: 65px 24px 24px;
+      }
+
+      .avatar {
+        width: 72px;
+        height: 72px;
+        top: -36px;
+      }
+
+      .bio {
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+
+      .bio .story-title {
+        margin: 10px 0 8px;
+        font-size: 14px;
+      }
+
+      .role-section {
+        margin-bottom: 12px;
+      }
+
+      .divider {
+        margin-bottom: 12px;
+      }
+    }
+
+    @media (max-height: 600px) {
+      .page-wrapper {
+        margin-top: 2vh;
+        padding-bottom: 110px;
+      }
+
+      .card {
+        padding: 55px 20px 20px;
+      }
+
+      .avatar {
+        width: 60px;
+        height: 60px;
+        top: -30px;
+      }
+
+      .handle {
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .bio {
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      .bio .story-title {
+        margin: 8px 0 6px;
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 
@@ -519,58 +742,67 @@
     <div class="enter-text">hi (click to enter)</div>
   </div>
 
-  <div class="card" id="card">
-    <div class="avatar" id="avatar">
-      <img src="avatar.jpg" alt="avatar">
-    </div>
-    <div class="handle">usp</div>
-    <div class="role-section">
-      <span>i am a</span>
-      <span class="role-box" id="roleBox"></span>
-    </div>
-    <div class="bio">hi, i'm <strong>usphind</strong>!<br>i love <strong>marvel</strong> (as seen in the
-      background)<br>i specialize in luau and some javascript, i mainly make
-      scripts and
-      uis.<span class="story-title">my story</span>i
-      started coding in <strong>early 2025</strong> with luau, it became my passion and ever since i have progressed
-      more and more and
-      fell in love with programming.<br><br>i released my first public luau script on <strong>1/19/2026</strong> and
-      kept updating it almost every day until <strong>5/6/2026</strong> where i officially discontinued the project,
-      ending with a total line count of <strong>4,773</strong>.<br><br><span class="story-title">languages i
-        know</span><strong>Python</strong>, <strong>LuaU</strong><br><span class="story-title">languages i half
-        know</span><strong>JavaScript</strong><br><span class="story-title">languages i want to
-        learn</span><strong>C++</strong>, <strong>Rust</strong>, <strong>C#</strong></div>
-    <div class="divider"></div>
-    <div class="links">
-      <a href="https://discord.com/users/1269401238118727734" target="_blank" class="icon-btn">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157-2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
-        </svg>
-        <span class="tooltip"><strong>Discord</strong></span>
-      </a>
-      <a href="https://github.com/Veaquach" target="_blank" class="icon-btn">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-        </svg>
-        <span class="tooltip"><strong>GitHub</strong></span>
-      </a>
-      <div class="icon-btn" id="ltcBtn" onclick="copyLTC()">
-        <svg viewBox="0 0 82.6 82.6">
-          <path
-            d="M42,42.7,37.7,57.2h23a1.16,1.16,0,0,1,1.2,1.12v.38l-2,6.9a1.49,1.49,0,0,1-1.5,1.1H23.2l5.9-20.1-6.6,2L24,44l6.6-2,8.3-28.2a1.51,1.51,0,0,1,1.5-1.1h8.9a1.16,1.16,0,0,1,1.2,1.12v.38L43.5,38l6.6-2-1.4,4.8Z"
-            fill="#fff" />
-        </svg>
-        <span class="tooltip" id="ltcTooltip"><strong>Litecoin</strong></span>
+  <div class="page-wrapper" id="pageWrapper">
+    <div class="card" id="card">
+      <div class="avatar" id="avatar">
+        <img src="avatar.jpg" alt="avatar">
       </div>
+      <div class="handle">usp</div>
+      <div class="role-section">
+        <span>i am a</span>
+        <span class="role-box" id="roleBox"></span>
+      </div>
+      <div class="bio">hi, i'm <strong>usphind</strong>!<br>i love <strong>marvel</strong> (as seen in the
+        background)<br>i specialize in luau and some javascript, i mainly make
+        scripts and
+        uis.<span class="story-title">my story</span>i
+        started coding in <strong>early 2025</strong> with luau, it became my passion and ever since i have progressed
+        more and more and
+        fell in love with programming.<br><br>i released my first public luau script on <strong>1/19/2026</strong> and
+        kept updating it almost every day until <strong>5/6/2026</strong> where i officially discontinued the project,
+        ending with a total line count of <strong>4,773</strong>.<br><br><span class="story-title">languages i
+          know</span><strong>Python</strong>, <strong>LuaU</strong><br><span class="story-title">languages i half
+          know</span><strong>JavaScript</strong><br><span class="story-title">languages i want to
+          learn</span><strong>C++</strong>, <strong>Rust</strong>, <strong>C#</strong></div>
+      <div class="divider"></div>
+      <div class="links">
+        <a href="https://discord.com/users/1269401238118727734" target="_blank" class="icon-btn">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157-2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+          </svg>
+          <span class="tooltip"><strong>Discord</strong></span>
+        </a>
+        <a href="https://github.com/Veaquach" target="_blank" class="icon-btn">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+          </svg>
+          <span class="tooltip"><strong>GitHub</strong></span>
+        </a>
+        <div class="icon-btn" id="ltcBtn" onclick="copyLTC()">
+          <svg viewBox="0 0 82.6 82.6">
+            <path
+              d="M42,42.7,37.7,57.2h23a1.16,1.16,0,0,1,1.2,1.12v.38l-2,6.9a1.49,1.49,0,0,1-1.5,1.1H23.2l5.9-20.1-6.6,2L24,44l6.6-2,8.3-28.2a1.51,1.51,0,0,1,1.5-1.1h8.9a1.16,1.16,0,0,1,1.2,1.12v.38L43.5,38l6.6-2-1.4,4.8Z"
+              fill="#fff" />
+          </svg>
+          <span class="tooltip" id="ltcTooltip"><strong>Litecoin</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="credits" id="credits">
+      usp - coding since early 2025<br>
+      credits to <a href="https://guns.lol" target="_blank">guns.lol</a> and <a href="https://byfron.llc"
+        target="_blank">byfron.llc</a> for the ui inspiration
     </div>
   </div>
 
-  <div class="credits" id="credits">
-    usp - coding since early 2025<br>
-    credits to <a href="https://guns.lol" target="_blank">guns.lol</a> and <a href="https://byfron.llc"
-      target="_blank">byfron.llc</a> for the ui inspiration
+  <div class="scroll-indicator" id="scrollIndicator">
+    <span>scroll</span>
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M3 6L8 11L13 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
   </div>
 
   <canvas class="visualizer" id="vis" width="300" height="40"></canvas>
@@ -627,6 +859,7 @@
       document.getElementById('audioPlayer').classList.add('visible');
       document.getElementById('credits').classList.add('visible');
       document.getElementById('vis').classList.add('visible');
+      document.getElementById('scrollIndicator').classList.add('visible');
       bgVideo.currentTime = 6;
       bgVideo.play();
       bgVideo.addEventListener('timeupdate', () => {
@@ -640,6 +873,15 @@
       pauseIcon.style.display = 'block';
       vinyl.classList.add('playing');
       setupVisualizer();
+    });
+
+    window.addEventListener('scroll', () => {
+      const indicator = document.getElementById('scrollIndicator');
+      if (window.scrollY > 30) {
+        indicator.classList.add('hidden');
+      } else {
+        indicator.classList.remove('hidden');
+      }
     });
 
     const card = document.getElementById('card');
